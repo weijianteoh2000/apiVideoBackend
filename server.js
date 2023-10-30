@@ -2,6 +2,8 @@ const http = require('http');
 const url = require('url');
 const ApiVideoClient = require('@api.video/nodejs-client');
 
+const client = new ApiVideoClient({ apiKey: "NkaLmydeIOtdBlVKuayXJ5rQjxHtIMGnEgBAnHgrE9V" });
+
 const hostname = '127.0.0.1';
 const port = 3000;
 
@@ -25,8 +27,6 @@ server.listen(port, hostname, () => {
 });
 
 async function handleGetStream(req, res) {
-    const client = new ApiVideoClient({ apiKey: "NkaLmydeIOtdBlVKuayXJ5rQjxHtIMGnEgBAnHgrE9V" });
-
     // retrieve the first page of all livestreams
     const liveStreams = await client.liveStreams.list({});
 
@@ -53,13 +53,20 @@ async function handleGetStream(req, res) {
     res.end(JSON.stringify({ liveStreams }));
 }
 
-function handleAddStream(req, res) {
+async function handleAddStream(req, res) {
+    const liveStreamCreationPayload = {
+        name: "My Live Stream", // Add a name for your live stream here.
+        _public: true, // Whether your video can be viewed by everyone, or requires authentication to see it. 
+    };
+
+    const liveStream = await client.liveStreams.create(liveStreamCreationPayload);
+
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ message: 'Response for Route 2' }));
 }
 
-function handleDeleteStream(req, res) {
+async function handleDeleteStream(req, res) {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ message: 'Response for Route 3' }));
