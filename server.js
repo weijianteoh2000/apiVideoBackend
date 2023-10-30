@@ -24,9 +24,9 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-});
+// server.listen(hostname, () => {
+//     console.log(`Server running at http://${hostname}/`);
+// });
 
 async function handleGetStream(req, res) {
     // retrieve the first page of all livestreams
