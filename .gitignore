@@ -1,0 +1,8 @@
+# Ignore all .json files
+*.json
+
+# Ignore all .lock files
+*.lock
+
+# Ignore the node_modules folder
+node_modules/
