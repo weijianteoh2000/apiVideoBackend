@@ -4,8 +4,10 @@ const ApiVideoClient = require('@api.video/nodejs-client');
 
 const client = new ApiVideoClient({ apiKey: "NkaLmydeIOtdBlVKuayXJ5rQjxHtIMGnEgBAnHgrE9V" });
 
-const hostname = '127.0.0.1';
-const port = 3000;
+const local = '127.0.0.1';
+const host = 'https://apivideobackend.onrender.com';
+
+const hostname = host;
 
 const server = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
@@ -22,7 +24,7 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(port, hostname, () => {
+server.listen(hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
 
@@ -67,6 +69,10 @@ async function handleAddStream(req, res) {
 }
 
 async function handleDeleteStream(req, res) {
+    const liveStreamId = 'li400mYKSgQ6xs7taUeSaEKr'; // The unique identifier of the live stream whose thumbnail you want to delete.
+
+    const liveStream = await client.liveStreams.delete(liveStreamId);
+
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ message: 'Response for Route 3' }));
