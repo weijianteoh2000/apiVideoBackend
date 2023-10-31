@@ -1,4 +1,7 @@
 # Ignore all .lock files
+package-lock.json
+
+# Ignore all .lock files
 *.lock
 
 # Ignore the node_modules folder
