@@ -26,77 +26,89 @@ server.listen(port, () => {
 });
 
 async function handleGetStream(req, res, query) {
-    // retrieve the first page of all livestreams
-    const liveStreams = await client.liveStreams.list({});
+    try {
+        // retrieve the first page of all livestreams
+        const liveStreams = await client.liveStreams.list({});
 
-    // retrieve the livestreams having a given name
-    const liveStreams2 = await client.liveStreams.list({
-        name: 'Testing1'
-    });
+        // retrieve the livestreams having a given name
+        const liveStreams2 = await client.liveStreams.list({
+            name: 'Testing1'
+        });
 
-    // retrieve the livestreams having a given stream key
-    const liveStreams3 = await client.liveStreams.list({
-        streamKey: '1e46ce94-5877-4646-89fb-71cfe037c745'
-    });
+        // retrieve the livestreams having a given stream key
+        const liveStreams3 = await client.liveStreams.list({
+            streamKey: '1e46ce94-5877-4646-89fb-71cfe037c745'
+        });
 
-    // retrieve the second page of 30 items sorted by name desc
-    const liveStreams4 = await client.liveStreams.list({
-        sortBy: 'name',
-        sortOrder: 'desc',
-        currentPage: 1,
-        pageSize: 30
-    });
+        // retrieve the second page of 30 items sorted by name desc
+        const liveStreams4 = await client.liveStreams.list({
+            sortBy: 'name',
+            sortOrder: 'desc',
+            currentPage: 1,
+            pageSize: 30
+        });
 
-    const responseData = {
-        data: {
-            liveStreams
-        },
-        status: "SUCCESS"
-    };
+        const responseData = {
+            data: {
+                ...liveStreams
+            },
+            status: "SUCCESS"
+        };
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(responseData));
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(responseData));
+    } catch (e) {
+        handleNotFound(req, res);
+    }
 }
 
 async function handleAddStream(req, res, query) {
-    const liveStreamCreationPayload = {
-        name: "My Live Stream", // Add a name for your live stream here.
-        _public: true, // Whether your video can be viewed by everyone, or requires authentication to see it. 
-    };
+    try {
+        const liveStreamCreationPayload = {
+            name: "My Live Stream", // Add a name for your live stream here.
+            _public: true, // Whether your video can be viewed by everyone, or requires authentication to see it. 
+        };
 
-    const liveStream = await client.liveStreams.create(liveStreamCreationPayload);
+        const liveStream = await client.liveStreams.create(liveStreamCreationPayload);
 
-    const responseData = {
-        data: {
-            liveStream
-        },
-        status: "SUCCESS"
-    };
+        const responseData = {
+            data: {
+                ...liveStream
+            },
+            status: "SUCCESS"
+        };
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(responseData));
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(responseData));
+    } catch (e) {
+        handleNotFound(req, res);
+    }
 }
 
 async function handleDeleteStream(req, res, query) {
-    if(query.id == null){
-        handleNotFound(req, res)
+    try {
+        if (query.id == null) {
+            handleNotFound(req, res)
+        }
+        const liveStreamId = query.id;
+
+        const liveStream = await client.liveStreams.delete(liveStreamId);
+
+        const responseData = {
+            data: {
+                ...liveStream
+            },
+            status: "SUCCESS"
+        };
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(responseData));
+    } catch (e) {
+        handleNotFound(req, res);
     }
-    const liveStreamId = query.id;
-
-    const liveStream = await client.liveStreams.delete(liveStreamId);
-
-    const responseData = {
-        data: {
-            liveStream
-        },
-        status: "SUCCESS"
-    };
-
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(responseData));
 }
 
 function handleNotFound(req, res) {
