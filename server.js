@@ -56,7 +56,7 @@ async function handleGetStream(req, res, query) {
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ responseData }));
+    res.end(JSON.stringify(responseData));
 }
 
 async function handleAddStream(req, res, query) {
@@ -76,7 +76,7 @@ async function handleAddStream(req, res, query) {
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ message: 'Response for Route 2' }));
+    res.end(JSON.stringify(responseData));
 }
 
 async function handleDeleteStream(req, res, query) {
@@ -96,7 +96,7 @@ async function handleDeleteStream(req, res, query) {
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({responseData}));
+    res.end(JSON.stringify(responseData));
 }
 
 function handleNotFound(req, res) {
@@ -109,5 +109,5 @@ function handleNotFound(req, res) {
 
     res.statusCode = 404;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({responseData}));
+    res.end(JSON.stringify(responseData));
 }
